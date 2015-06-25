@@ -6,10 +6,13 @@
 package view;
 
 import controller.MaestriaJpaController;
+import controller.MatriculaJpaController;
 import controller.entityMan;
 import java.util.List;
+import javax.swing.table.DefaultTableModel;
 import model.Estudiante;
 import model.Maestria;
+import model.Matricula;
 
 /**
  *
@@ -20,12 +23,20 @@ public class MatricularDialog extends javax.swing.JDialog {
     /**
      * Creates new form MatricularDialog
      */
-    Estudiante estudiante;
+    private Estudiante estudiante;
+    DefaultTableModel df;
     public MatricularDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         iniciarData();
     }
+        public MatricularDialog(java.awt.Frame parent, boolean modal, Estudiante e) {
+        super(parent, modal);
+        this.estudiante = e;
+        initComponents();
+        iniciarData();
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -39,8 +50,6 @@ public class MatricularDialog extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnCiclo = new javax.swing.JComboBox();
-        jLabel2 = new javax.swing.JLabel();
-        cbMaestria = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
         cbSemetre = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
@@ -50,7 +59,7 @@ public class MatricularDialog extends javax.swing.JDialog {
         txtNombre = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblMatricula = new javax.swing.JTable();
         btnMatricular = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -62,8 +71,6 @@ public class MatricularDialog extends javax.swing.JDialog {
 
         btnCiclo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1er Ciclo", "2do Ciclo", "3er Ciclo", "4to Ciclo" }));
 
-        jLabel2.setText("Maestria:");
-
         jLabel3.setText("Semestre Academico:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -72,19 +79,15 @@ public class MatricularDialog extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addGap(76, 76, 76)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbMaestria, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel1)
+                        .addGap(95, 95, 95)
+                        .addComponent(btnCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
-                        .addComponent(cbSemetre, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(cbSemetre, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -94,11 +97,7 @@ public class MatricularDialog extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(btnCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(cbMaestria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(cbSemetre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -148,15 +147,15 @@ public class MatricularDialog extends javax.swing.JDialog {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Matricula Actual"));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblMatricula.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Ciclo", "Maestria", "Semestre"
+                "Ciclo", "Semestre"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblMatricula);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -189,7 +188,7 @@ public class MatricularDialog extends javax.swing.JDialog {
                     .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(166, 166, 166)
+                .addGap(159, 159, 159)
                 .addComponent(btnMatricular, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -204,7 +203,7 @@ public class MatricularDialog extends javax.swing.JDialog {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnMatricular)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         pack();
@@ -255,10 +254,8 @@ public class MatricularDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox btnCiclo;
     private javax.swing.JButton btnMatricular;
-    private javax.swing.JComboBox cbMaestria;
     private javax.swing.JComboBox cbSemetre;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -266,20 +263,32 @@ public class MatricularDialog extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblMatricula;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 
     private void iniciarData() {
-        txtCodigo.setText(estudiante.getIdEstudiante()+"");
-        txtNombre.setText(estudiante.getApellido()+", "+estudiante.getNombre());
+        txtCodigo.setText(getEstudiante().getIdEstudiante()+"");
+        txtNombre.setText(getEstudiante().getApellido()+", "+getEstudiante().getNombre());
+        df = (DefaultTableModel) tblMatricula.getModel();
+        MatriculaJpaController MaJc = new MatriculaJpaController(entityMan.getInstance());
+        List<Matricula> listaMatricula = MaJc.findByEstudiante(estudiante);
+        for(Matricula ma: listaMatricula){
+            Object fila[]={ma.getNroCiclo(),ma.getCicloidCiclo().getNombreCiclo()};
+            df.addRow(fila);
+            
+        }
         
         //Cargar comboboxes
-        MaestriaJpaController mJc = new MaestriaJpaController(entityMan.getInstance());
-        List<Maestria> listaM = mJc.findMaestriaEntities();
-        for(Maestria m: listaM){
-            cbMaestria.addItem(m);
-        }
+       
+    }
+
+    public Estudiante getEstudiante() {
+        return estudiante;
+    }
+
+    public void setEstudiante(Estudiante estudiante) {
+        this.estudiante = estudiante;
     }
 }

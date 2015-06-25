@@ -216,7 +216,7 @@ public class pagoView extends javax.swing.JFrame {
         EstudianteDialog ew = new EstudianteDialog(this, true);
         ew.setVisible(true);
 
-        txtEstudiante.setText(ew.estSele.getNombre() + " " + ew.estSele.getNombre());
+        txtEstudiante.setText(ew.estSele.getNombre() + " " + ew.estSele.getApellido());
         cbCiclo.setEnabled(true);
         e = ew.estSele;
 

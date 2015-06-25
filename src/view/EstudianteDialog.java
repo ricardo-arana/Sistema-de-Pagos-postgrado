@@ -300,8 +300,8 @@ public class EstudianteDialog extends javax.swing.JDialog {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        MatricularDialog matriDia = new MatricularDialog(null, true);
-        matriDia.estudiante = (Estudiante)tabla.getValueAt(tabla.getSelectedRow(), 0);
+        Estudiante e= (Estudiante)tabla.getValueAt(tabla.getSelectedRow(), 0);
+        MatricularDialog matriDia = new MatricularDialog(null, false,e);
         matriDia.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 

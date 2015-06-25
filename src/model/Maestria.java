@@ -98,7 +98,7 @@ public class Maestria implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Maestria[ idMaestria=" + idMaestria + " ]";
+        return nombreMaestria;
     }
     
 }
