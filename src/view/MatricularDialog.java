@@ -5,11 +5,13 @@
  */
 package view;
 
+import controller.CicloJpaController;
 import controller.MaestriaJpaController;
 import controller.MatriculaJpaController;
 import controller.entityMan;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import model.Ciclo;
 import model.Estudiante;
 import model.Maestria;
 import model.Matricula;
@@ -49,7 +51,7 @@ public class MatricularDialog extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        btnCiclo = new javax.swing.JComboBox();
+        cbCiclo = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
         cbSemetre = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
@@ -69,7 +71,7 @@ public class MatricularDialog extends javax.swing.JDialog {
 
         jLabel1.setText("Ciclo:");
 
-        btnCiclo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1er Ciclo", "2do Ciclo", "3er Ciclo", "4to Ciclo" }));
+        cbCiclo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1er Ciclo", "2do Ciclo", "3er Ciclo", "4to Ciclo" }));
 
         jLabel3.setText("Semestre Academico:");
 
@@ -83,7 +85,7 @@ public class MatricularDialog extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(95, 95, 95)
-                        .addComponent(btnCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cbCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
@@ -96,7 +98,7 @@ public class MatricularDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(btnCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -175,6 +177,11 @@ public class MatricularDialog extends javax.swing.JDialog {
         );
 
         btnMatricular.setText("Matricular");
+        btnMatricular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMatricularActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -208,6 +215,24 @@ public class MatricularDialog extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnMatricularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMatricularActionPerformed
+        // TODO add your handling code here:
+        MatriculaJpaController mJc = new MatriculaJpaController(entityMan.getInstance());
+        Matricula matricula = new Matricula();
+        matricula.setCicloidCiclo((Ciclo)cbSemetre.getSelectedItem());
+        matricula.setEstudianteidEstudiante(estudiante);
+        String nroCiclo=null;
+        switch(cbCiclo.getSelectedItem().toString()){
+            case "1er Ciclo": nroCiclo = "1";break;
+            case "2do Ciclo": nroCiclo = "2";break;
+            case "3er Ciclo": nroCiclo = "3";break;
+            case "4to Ciclo": nroCiclo = "4";break;    
+        }
+        matricula.setNroCiclo(nroCiclo);
+        mJc.create(matricula);
+        iniciarData();
+    }//GEN-LAST:event_btnMatricularActionPerformed
 
     /**
      * @param args the command line arguments
@@ -252,8 +277,8 @@ public class MatricularDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox btnCiclo;
     private javax.swing.JButton btnMatricular;
+    private javax.swing.JComboBox cbCiclo;
     private javax.swing.JComboBox cbSemetre;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
@@ -269,9 +294,11 @@ public class MatricularDialog extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private void iniciarData() {
+        
         txtCodigo.setText(getEstudiante().getIdEstudiante()+"");
         txtNombre.setText(getEstudiante().getApellido()+", "+getEstudiante().getNombre());
         df = (DefaultTableModel) tblMatricula.getModel();
+        df.setRowCount(0);
         MatriculaJpaController MaJc = new MatriculaJpaController(entityMan.getInstance());
         List<Matricula> listaMatricula = MaJc.findByEstudiante(estudiante);
         for(Matricula ma: listaMatricula){
@@ -281,7 +308,11 @@ public class MatricularDialog extends javax.swing.JDialog {
         }
         
         //Cargar comboboxes
-       
+        CicloJpaController cJc = new CicloJpaController(entityMan.getInstance());
+        List<Ciclo> listaCiclo = cJc.findCicloEntities();
+        for(Ciclo c: listaCiclo){
+            cbSemetre.addItem(c);
+        }
     }
 
     public Estudiante getEstudiante() {
