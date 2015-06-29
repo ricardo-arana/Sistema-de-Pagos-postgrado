@@ -41,6 +41,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         mRegistrarEstudiante = new javax.swing.JMenuItem();
         mRegistrarPago = new javax.swing.JMenuItem();
+        RegCiclo = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         mConsulta = new javax.swing.JMenuItem();
 
@@ -66,6 +67,14 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jMenu1.add(mRegistrarPago);
+
+        RegCiclo.setText("Registrar Ciclo");
+        RegCiclo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RegCicloActionPerformed(evt);
+            }
+        });
+        jMenu1.add(RegCiclo);
 
         jMenuBar1.add(jMenu1);
 
@@ -107,6 +116,11 @@ public class Principal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_mRegistrarPagoActionPerformed
 
+    private void RegCicloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegCicloActionPerformed
+        CicloDialog Cd = new CicloDialog(this, false);
+        Cd.setVisible(true);
+    }//GEN-LAST:event_RegCicloActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -143,6 +157,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem RegCiclo;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
