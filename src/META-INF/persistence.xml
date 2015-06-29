@@ -9,6 +9,7 @@
     <class>model.Pago</class>
     <class>model.Ciclo</class>
     <class>model.Matricula</class>
+    <class>model.Curso</class>
     <shared-cache-mode>ALL</shared-cache-mode>
     <validation-mode>NONE</validation-mode>
     <properties>
