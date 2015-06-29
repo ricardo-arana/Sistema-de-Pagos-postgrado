@@ -6,6 +6,7 @@
 package view;
 
 import controller.CicloJpaController;
+import controller.MatriculaJpaController;
 import controller.PagoJpaController;
 import controller.entityMan;
 import java.text.ParseException;
@@ -15,9 +16,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 import model.Ciclo;
 import model.Estudiante;
+import model.Matricula;
 import model.Pago;
 import model.User;
 
@@ -40,15 +43,13 @@ public class pagoView extends javax.swing.JFrame {
      */
     public pagoView() {
         initComponents();
-        deM = (DefaultTableModel) tblPagos.getModel();
-        llenarComboCiclo();
+        deM = (DefaultTableModel) tblPagos.getModel();    
     }
 
     public pagoView(User u) {
         initComponents();
         deM = (DefaultTableModel) tblPagos.getModel();
         this.u = u;
-        llenarComboCiclo();
     }
 
     /**
@@ -219,6 +220,7 @@ public class pagoView extends javax.swing.JFrame {
         txtEstudiante.setText(ew.estSele.getNombre() + " " + ew.estSele.getApellido());
         cbCiclo.setEnabled(true);
         e = ew.estSele;
+        llenarComboCiclo();
 
 
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -372,10 +374,10 @@ public class pagoView extends javax.swing.JFrame {
 
     private void llenarComboCiclo() {
         cbCiclo.addItem("Selecione Ciclo");
-        CicloJpaController CjC = new CicloJpaController(entityMan.getInstance());
-        List<Ciclo> listaCiclos = CjC.findCicloEntities();
-        for (Ciclo c : listaCiclos) {
-            cbCiclo.addItem(c);
+        MatriculaJpaController Mjc = new MatriculaJpaController(entityMan.getInstance());
+        List<Matricula> listaCiclos = Mjc.findByEstudiante(e);
+        for (Matricula m : listaCiclos) {
+            cbCiclo.addItem(m.getCicloidCiclo());
         }
     }
 

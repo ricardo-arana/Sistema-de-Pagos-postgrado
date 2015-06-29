@@ -6,9 +6,11 @@
 package view;
 
 import controller.MaestriaJpaController;
+import controller.MatriculaJpaController;
 import controller.entityMan;
 import java.util.List;
 import model.Maestria;
+import model.Matricula;
 
 /**
  *
@@ -23,9 +25,9 @@ public class test {
         // TODO code application logic here
         
         MaestriaJpaController mjc = new MaestriaJpaController(entityMan.getInstance());
-        
-        List<Maestria> lista = mjc.findMaestriaEntities();
-        for(Maestria m: lista){
+        MatriculaJpaController Mjc = new MatriculaJpaController(entityMan.getInstance());
+        List<Matricula> listaCiclos = Mjc.findMatriculaEntities();
+        for(Matricula m: listaCiclos){
             System.out.println(m);
         }
     }
