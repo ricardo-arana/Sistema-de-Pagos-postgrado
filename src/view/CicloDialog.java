@@ -7,8 +7,11 @@
 package view;
 
 import controller.CicloJpaController;
+import controller.exceptions.NonexistentEntityException;
 import database.entityMan;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Ciclo;
@@ -51,6 +54,7 @@ public class CicloDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Mantenimiento de Cursos");
 
+        txtBuscar.setEnabled(false);
         txtBuscar.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtBuscarFocusLost(evt);
@@ -72,8 +76,14 @@ public class CicloDialog extends javax.swing.JDialog {
         });
 
         btnBorrar.setText("Borrar");
+        btnBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBorrarActionPerformed(evt);
+            }
+        });
 
         btnGuardar.setText("Guardar");
+        btnGuardar.setEnabled(false);
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarActionPerformed(evt);
@@ -81,6 +91,12 @@ public class CicloDialog extends javax.swing.JDialog {
         });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.setEnabled(false);
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         tablaciclo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -90,6 +106,11 @@ public class CicloDialog extends javax.swing.JDialog {
                 "IdCiclo", "Ciclo"
             }
         ));
+        tablaciclo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablacicloMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaciclo);
 
         jLabel1.setText("Nombre de Ciclo");
@@ -103,21 +124,21 @@ public class CicloDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnNuevo)
+                                .addComponent(btnNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnModificar)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnBorrar))
+                                .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnGuardar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCancelar)
+                                .addGap(20, 20, 20)
+                                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnGuardar)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnCancelar)))
                         .addGap(0, 17, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -127,14 +148,14 @@ public class CicloDialog extends javax.swing.JDialog {
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(btnGuardar)
+                    .addComponent(btnCancelar))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNuevo)
                     .addComponent(btnModificar)
-                    .addComponent(btnBorrar)
-                    .addComponent(btnGuardar)
-                    .addComponent(btnCancelar))
+                    .addComponent(btnBorrar))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -149,17 +170,17 @@ public class CicloDialog extends javax.swing.JDialog {
        Ciclo.setNombreCiclo(txtBuscar.getText());
         try {
             Cjc.create(Ciclo);
+            botones(false);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error, No se pueden agregar duplicados");
+            JOptionPane.showMessageDialog(null, "Error: Consulte con Soporte Tecnico");
         }
        
        inittabla();
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-        
-         
-       
+        botones(true);
+        txtBuscar.requestFocus();
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void txtBuscarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBuscarFocusLost
@@ -173,10 +194,34 @@ public class CicloDialog extends javax.swing.JDialog {
          ciclo.setNombreCiclo(NombreCiclo);
          try {
             Cjc.edit(ciclo);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error, No se pueden agregar duplicados");
+            inittabla();
+        } catch (Exception e) {  
         }
     }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void tablacicloMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablacicloMouseClicked
+        Ciclo ciclo =(Ciclo)tablaciclo.getValueAt(tablaciclo.getSelectedRow(), 1);
+        txtBuscar.setText(ciclo.getNombreCiclo());
+                  
+    }//GEN-LAST:event_tablacicloMouseClicked
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        botones(false);
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarActionPerformed
+        Ciclo ciclo =(Ciclo)tablaciclo.getValueAt(tablaciclo.getSelectedRow(), 1);
+        CicloJpaController Cjc= new CicloJpaController(entityMan.getInstance());
+        int JP=JOptionPane.showConfirmDialog(this, "¿Deseas Realmente borrar este item?", "Peligro", JOptionPane.YES_NO_OPTION);
+        if (JP==JOptionPane.YES_OPTION) {
+            try {
+                Cjc.destroy(ciclo.getIdCiclo());
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(EstudianteDialog.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            inittabla();
+        }
+    }//GEN-LAST:event_btnBorrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -245,5 +290,14 @@ public class CicloDialog extends javax.swing.JDialog {
         
                 
        
+    }
+    void botones(boolean B){
+        txtBuscar.setText("");
+        txtBuscar.setEnabled(B);
+        btnGuardar.setEnabled(B);
+        btnCancelar.setEnabled(B);
+        btnBorrar.setEnabled(!B);
+        btnModificar.setEnabled(!B);
+        btnNuevo.setEnabled(!B);
     }
 }
