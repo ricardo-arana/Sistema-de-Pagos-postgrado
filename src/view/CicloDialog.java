@@ -41,7 +41,6 @@ public class CicloDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txtBuscar = new javax.swing.JTextField();
         btnNuevo = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
         btnBorrar = new javax.swing.JButton();
@@ -50,16 +49,10 @@ public class CicloDialog extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaciclo = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+        txtBuscar = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Mantenimiento de Cursos");
-
-        txtBuscar.setEnabled(false);
-        txtBuscar.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtBuscarFocusLost(evt);
-            }
-        });
 
         btnNuevo.setText("Nuevo");
         btnNuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -115,6 +108,13 @@ public class CicloDialog extends javax.swing.JDialog {
 
         jLabel1.setText("Nombre de Ciclo");
 
+        try {
+            txtBuscar.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####U")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        txtBuscar.setEnabled(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -133,13 +133,13 @@ public class CicloDialog extends javax.swing.JDialog {
                                 .addComponent(btnBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
-                                .addGap(20, 20, 20)
-                                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnGuardar)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnCancelar)))
-                        .addGap(0, 17, Short.MAX_VALUE)))
+                        .addGap(0, 5, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -147,10 +147,10 @@ public class CicloDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(btnGuardar)
-                    .addComponent(btnCancelar))
+                    .addComponent(btnCancelar)
+                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNuevo)
@@ -182,10 +182,6 @@ public class CicloDialog extends javax.swing.JDialog {
         botones(true);
         txtBuscar.requestFocus();
     }//GEN-LAST:event_btnNuevoActionPerformed
-
-    private void txtBuscarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBuscarFocusLost
-        //if (txtBuscar.getText().substring(0,3))
-    }//GEN-LAST:event_txtBuscarFocusLost
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
          Ciclo ciclo = (Ciclo)tablaciclo.getValueAt(tablaciclo.getSelectedRow(), 1);
@@ -274,7 +270,7 @@ public class CicloDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaciclo;
-    private javax.swing.JTextField txtBuscar;
+    private javax.swing.JFormattedTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
 
     private void inittabla() {

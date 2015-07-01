@@ -82,6 +82,11 @@ public class Principal extends javax.swing.JFrame {
         jMenu2.setText("Consultas");
 
         mConsulta.setText("Consulta de Pago");
+        mConsulta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mConsultaActionPerformed(evt);
+            }
+        });
         jMenu2.add(mConsulta);
 
         jMenuBar1.add(jMenu2);
@@ -120,6 +125,11 @@ public class Principal extends javax.swing.JFrame {
         CicloDialog Cd = new CicloDialog(this, false);
         Cd.setVisible(true);
     }//GEN-LAST:event_RegCicloActionPerformed
+
+    private void mConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mConsultaActionPerformed
+        ResumenPagos RP = new ResumenPagos(this, false);
+        RP.setVisible(true);
+    }//GEN-LAST:event_mConsultaActionPerformed
 
     /**
      * @param args the command line arguments
