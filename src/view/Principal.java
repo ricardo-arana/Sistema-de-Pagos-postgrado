@@ -37,6 +37,8 @@ public class Principal extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mRegistrarEstudiante = new javax.swing.JMenuItem();
@@ -44,10 +46,18 @@ public class Principal extends javax.swing.JFrame {
         RegCiclo = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         mConsulta = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
 
         jMenuItem2.setText("jMenuItem2");
 
+        jMenuItem1.setText("jMenuItem1");
+
+        jMenuItem3.setText("jMenuItem3");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Menu Principal");
 
         jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/build-icons/_0037_Notepad.png"))); // NOI18N
         jMenu1.setText("Registros");
@@ -91,13 +101,30 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
+        jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/build-icons/_0038_Calender.png"))); // NOI18N
+        jMenu3.setText("Reportes");
+
+        jMenuItem4.setText("Lista de Estudiantes");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem4);
+
+        jMenuBar1.add(jMenu3);
+
+        jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/build-icons/_0011_Info.png"))); // NOI18N
+        jMenu4.setText("Ayuda");
+        jMenuBar1.add(jMenu4);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 709, Short.MAX_VALUE)
+            .addGap(0, 446, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -130,6 +157,12 @@ public class Principal extends javax.swing.JFrame {
         ResumenPagos RP = new ResumenPagos(this, false);
         RP.setVisible(true);
     }//GEN-LAST:event_mConsultaActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        ReporteListaAlumnos RLA = new ReporteListaAlumnos(this, false);
+        RLA.setVisible(true);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -170,8 +203,13 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem RegCiclo;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem mConsulta;
     private javax.swing.JMenuItem mRegistrarEstudiante;
     private javax.swing.JMenuItem mRegistrarPago;

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="92af3f9a-3968-4e04-b71e-23747376386c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="nroCiclo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idCiclo" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idMaestria" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     matricula.`nroCiclo` AS matricula_nroCiclo,
+     estudiante.`idEstudiante` AS estudiante_idEstudiante,
+     estudiante.`nombre` AS estudiante_nombre,
+     estudiante.`apellido` AS estudiante_apellido,
+     maestria.`nombreMaestria` AS maestria_nombreMaestria,
+     ciclo.`NombreCiclo` AS ciclo_NombreCiclo
+FROM
+     `estudiante` estudiante INNER JOIN `matricula` matricula ON estudiante.`idEstudiante` = matricula.`estudiante_idEstudiante`
+     INNER JOIN `maestria` maestria ON estudiante.`Maestria` = maestria.`idMaestria`
+     INNER JOIN `ciclo` ciclo ON matricula.`ciclo_idCiclo` = ciclo.`idCiclo`
+Where matricula.`nroCiclo` = $P{nroCiclo}
+And matricula.`ciclo_idCiclo` = $P{idCiclo}
+and `estudiante`.`Maestria` = $P{idMaestria}]]>
+	</queryString>
+	<field name="matricula_nroCiclo" class="java.lang.String"/>
+	<field name="estudiante_idEstudiante" class="java.lang.Integer"/>
+	<field name="estudiante_nombre" class="java.lang.String"/>
+	<field name="estudiante_apellido" class="java.lang.String"/>
+	<field name="maestria_nombreMaestria" class="java.lang.String"/>
+	<field name="ciclo_NombreCiclo" class="java.lang.String"/>
+	<group name="ciclo_NombreCiclo">
+		<groupExpression><![CDATA[$F{ciclo_NombreCiclo}]]></groupExpression>
+		<groupHeader>
+			<band height="33">
+				<staticText>
+					<reportElement mode="Opaque" x="0" y="0" width="100" height="32" forecolor="#666666" backcolor="#E6E6E6" uuid="4d7a49bc-a849-4e3c-a272-770733855708"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<text><![CDATA[Semestre Acedemicos]]></text>
+				</staticText>
+				<textField>
+					<reportElement mode="Opaque" x="100" y="0" width="455" height="32" forecolor="#006699" backcolor="#E6E6E6" uuid="27324d9b-fc2a-466b-87b8-97a563d16ed2"/>
+					<textElement>
+						<font size="24" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ciclo_NombreCiclo}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="-20" y="32" width="595" height="1" forecolor="#666666" uuid="077c628d-fc64-4525-b82e-836744902a3c"/>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="maestria_nombreMaestria">
+		<groupExpression><![CDATA[$F{maestria_nombreMaestria}]]></groupExpression>
+		<groupHeader>
+			<band height="32">
+				<textField>
+					<reportElement x="100" y="0" width="455" height="32" forecolor="#006699" uuid="1df44d09-daa7-4852-87b2-acbfe177e411"/>
+					<textElement>
+						<font size="22" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{maestria_nombreMaestria}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="0" width="100" height="20" forecolor="#666666" uuid="5f205bf4-fa87-4867-9bbe-7e6136a2237b"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<text><![CDATA[Maestría]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="matricula_nroCiclo">
+		<groupExpression><![CDATA[$F{matricula_nroCiclo}]]></groupExpression>
+		<groupHeader>
+			<band height="32">
+				<textField>
+					<reportElement x="100" y="0" width="455" height="32" forecolor="#006699" uuid="6cc9cd0d-97e2-40cf-9400-01f9fe76b87b"/>
+					<textElement>
+						<font size="20" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{matricula_nroCiclo}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="0" width="100" height="20" forecolor="#666666" uuid="ac8affc2-51ce-4573-a633-517d159b70a1"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<text><![CDATA[Ciclo]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="72">
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="-20" width="595" height="92" backcolor="#006699" uuid="b726a8b5-bd42-4b64-9b6e-795284869d16"/>
+				<staticText>
+					<reportElement x="20" y="20" width="265" height="43" forecolor="#FFFFFF" uuid="b95e5951-700a-4e64-bfe6-91c7d68dff55"/>
+					<textElement>
+						<font size="24" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Lista de Maticulados]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="395" y="43" width="180" height="20" forecolor="#FFFFFF" uuid="6c72fedf-edb9-42fc-9488-d5b3acffc805"/>
+					<textElement textAlignment="Right">
+						<font size="14" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Add a description here]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="13"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="21">
+			<line>
+				<reportElement x="-20" y="20" width="595" height="1" forecolor="#666666" uuid="ff8e7d7b-9872-49dd-b5e7-aab844541bde"/>
+			</line>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="185" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="60b4d634-c6e0-4ea2-8528-75e8ce28f2a5"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Codigo de estudiante]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="185" y="0" width="185" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="1f12f14b-871d-4a47-b6b4-b76aa3638047"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="370" y="0" width="185" height="20" forecolor="#006699" backcolor="#E6E6E6" uuid="2a628ddf-f445-4bbd-be9a-7941652a3fd7"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Apellido]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="19" width="555" height="1" uuid="63d5e98c-c996-4fc0-8ed1-a37d33c64692"/>
+			</line>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="0" width="185" height="20" uuid="6290c314-4bfe-4ad8-9c67-46cce0d180d0"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{estudiante_idEstudiante}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="185" y="0" width="185" height="20" uuid="40dcb545-730a-48f5-ae7a-763fa501a66c"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{estudiante_nombre}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="370" y="0" width="185" height="20" uuid="284e12ce-cb98-4339-8620-a4998fc6788e"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{estudiante_apellido}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="17">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="4" width="515" height="13" backcolor="#E6E6E6" uuid="0219430b-48b8-47e4-91c6-5ad10beee011"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="515" y="4" width="40" height="13" backcolor="#E6E6E6" uuid="ce19df5b-6f5d-4c36-818d-7de0183464bc"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="0" y="4" width="100" height="13" uuid="38d7406c-f793-4160-b6bc-1a8a47fbdf87"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>
