@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-06-2015 a las 03:38:27
+-- Tiempo de generación: 01-07-2015 a las 06:46:25
 -- Versión del servidor: 5.6.17
 -- Versión de PHP: 5.5.12
 
@@ -30,7 +30,8 @@ CREATE TABLE IF NOT EXISTS `ciclo` (
   `idCiclo` int(11) NOT NULL AUTO_INCREMENT,
   `NombreCiclo` varchar(45) DEFAULT NULL,
   `CicloAnterior` int(11) DEFAULT NULL,
-  PRIMARY KEY (`idCiclo`)
+  PRIMARY KEY (`idCiclo`),
+  UNIQUE KEY `NombreCiclo` (`NombreCiclo`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
@@ -55,14 +56,7 @@ CREATE TABLE IF NOT EXISTS `curso` (
   `Maestria_idMaestria` int(11) NOT NULL,
   PRIMARY KEY (`idCurso`),
   KEY `fk_Curso_Maestria1_idx` (`Maestria_idMaestria`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
-
---
--- Volcado de datos para la tabla `curso`
---
-
-INSERT INTO `curso` (`idCurso`, `NombreCurso`, `Maestria_idMaestria`) VALUES
-(1, 'Matemática Aplicada', 4);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -105,8 +99,8 @@ CREATE TABLE IF NOT EXISTS `estudiante` (
 
 INSERT INTO `estudiante` (`idEstudiante`, `nombre`, `apellido`, `DNI`, `direccion`, `Telefono`, `UsuarioRegistro`, `Maestria`) VALUES
 (1, 'Vaner', 'Anampa Martines', '12345678', '12345678', '12345', 1, 1),
-(2, 'Anell', 'Roldan Quinallata', '87654321', 'jr por ahi ', '987654', 1, 2),
-(3, 'Ricardo', 'Arana Reyes Guerrero', '12345679', 'Jr Cahuide 1542', '3843758939', 1, 3),
+(2, 'Anell', 'Roldan Quinallata', '87654321', '87654321', '987654', 1, 1),
+(3, 'Ricardo', 'Arana Reyes Guerrero', '12345679', '12345679', '3843758939', 1, 1),
 (4, 'Carlos', 'Perez Cuella', '12346579', '12346579', NULL, 1, 4),
 (5, 'Renzo', 'Flores Espinoza', '23294949', '23294949', '1234', 1, 1);
 
@@ -155,6 +149,43 @@ INSERT INTO `maestria` (`idMaestria`, `nombreMaestria`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `matricula`
+--
+
+CREATE TABLE IF NOT EXISTS `matricula` (
+  `idmatricula` int(11) NOT NULL AUTO_INCREMENT,
+  `nroCiclo` varchar(2) DEFAULT NULL,
+  `ciclo_idCiclo` int(11) NOT NULL,
+  `estudiante_idEstudiante` int(11) NOT NULL,
+  PRIMARY KEY (`idmatricula`),
+  KEY `fk_matricula_ciclo1_idx` (`ciclo_idCiclo`),
+  KEY `fk_matricula_estudiante1_idx` (`estudiante_idEstudiante`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+
+--
+-- Volcado de datos para la tabla `matricula`
+--
+
+INSERT INTO `matricula` (`idmatricula`, `nroCiclo`, `ciclo_idCiclo`, `estudiante_idEstudiante`) VALUES
+(5, '1', 1, 1),
+(6, '2', 2, 1),
+(7, '3', 3, 1),
+(8, '1', 1, 2),
+(9, '2', 2, 2),
+(10, '1', 1, 3),
+(11, '2', 2, 3),
+(12, '3', 3, 3),
+(13, '1', 1, 4),
+(14, '2', 2, 4),
+(15, '3', 3, 4),
+(16, '1', 1, 5),
+(17, '2', 2, 5),
+(18, '3', 3, 5),
+(19, '4', 4, 5);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `pago`
 --
 
@@ -179,13 +210,13 @@ CREATE TABLE IF NOT EXISTS `pago` (
 --
 
 INSERT INTO `pago` (`nroVoucher`, `Cuota`, `Estudiante_idEstudiante`, `Maestria_idMaestria`, `Ciclo_idCiclo`, `monto`, `montoSaldo`, `fechaPago`, `fechaRegPago`) VALUES
-('123', '0', 1, 1, 1, 200.00, 0.00, '2015-06-09', '2015-06-10'),
-('123456', '0', 2, 2, 1, 100.00, 100.00, '2015-06-17', '2015-06-17'),
-('12345609', '2', 2, 2, 1, 100.00, 200.00, '2015-06-17', '2015-06-17'),
-('1234567', '0', 2, 2, 1, 100.00, 0.00, '2015-06-17', '2015-06-17'),
-('12345678', '1', 2, 2, 1, 100.00, 200.00, '2015-06-17', '2015-06-17'),
-('123456789', '1', 2, 2, 1, 100.00, 100.00, '2015-06-17', '2015-06-17'),
-('12345678910', '1', 2, 2, 1, 100.00, 0.00, '2015-06-17', '2015-06-17');
+('1238786', '0', 1, 1, 1, 100.00, 100.00, '2015-06-29', '2015-06-29'),
+('1238786w', '0', 1, 1, 1, 100.00, 0.00, '2015-06-29', '2015-06-29'),
+('127646', '0', 2, 1, 1, 200.00, 0.00, '2015-06-29', '2015-06-29'),
+('1276468765', '1', 2, 1, 1, 300.00, 0.00, '2015-06-29', '2015-06-29'),
+('42', '0', 4, 4, 1, 200.00, 0.00, '2015-06-29', '2015-06-29'),
+('432424', '1', 1, 1, 1, 300.00, 0.00, '2015-06-29', '2015-06-29'),
+('45678765456', '2', 1, 1, 1, 200.00, 100.00, '2015-06-30', '2015-06-30');
 
 -- --------------------------------------------------------
 
@@ -312,6 +343,13 @@ ALTER TABLE `curso_has_profesor`
 ALTER TABLE `estudiante`
   ADD CONSTRAINT `fk_Estudiante_Maestria1` FOREIGN KEY (`Maestria`) REFERENCES `maestria` (`idMaestria`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_Estudiante_user1` FOREIGN KEY (`UsuarioRegistro`) REFERENCES `user` (`idUser`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Filtros para la tabla `matricula`
+--
+ALTER TABLE `matricula`
+  ADD CONSTRAINT `fk_matricula_ciclo1` FOREIGN KEY (`ciclo_idCiclo`) REFERENCES `ciclo` (`idCiclo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_matricula_estudiante1` FOREIGN KEY (`estudiante_idEstudiante`) REFERENCES `estudiante` (`idEstudiante`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `pago`
