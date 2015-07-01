@@ -7,11 +7,14 @@
 package view;
 
 import controller.CicloJpaController;
+import controller.EstudianteJpaController;
 import controller.MaestriaJpaController;
+import controller.PagoJpaController;
 import controller.entityMan;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import model.Ciclo;
+import model.Estudiante;
 import model.Maestria;
 import model.Pago;
 
@@ -20,8 +23,9 @@ import model.Pago;
  * @author veram
  */
 public class ResumenPagos extends javax.swing.JDialog {
-    DefaultTableModel Dt;
-    List<Pago> ListP;
+    DefaultTableModel Dt,Dt1;
+    List<Pago> ListP,ListP2;
+    List<Estudiante>ListE;
     Pago pagoEst;
     
     /**
@@ -30,7 +34,6 @@ public class ResumenPagos extends javax.swing.JDialog {
     public ResumenPagos(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        iniciartabla();
         LlenarComboMaestrias();
         LlenarComboCiclo();
     }
@@ -45,20 +48,21 @@ public class ResumenPagos extends javax.swing.JDialog {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbNombres = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tbPagos = new javax.swing.JTable();
         cbMaestrias = new javax.swing.JComboBox();
         cbCiclo = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        btnMostrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Resumen de Pagos");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbNombres.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -66,11 +70,11 @@ public class ResumenPagos extends javax.swing.JDialog {
                 "Apellidos y Nombres", "Pago Matricula", "N° Documento", "Fecha", "Saldo a Pagar"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbNombres);
 
         jScrollPane3.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tbPagos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -86,7 +90,7 @@ public class ResumenPagos extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tbPagos);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -109,6 +113,13 @@ public class ResumenPagos extends javax.swing.JDialog {
 
         jLabel2.setText("Maestria :");
 
+        btnMostrar.setText("Mostrar");
+        btnMostrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMostrarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -128,7 +139,10 @@ public class ResumenPagos extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cbMaestrias, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cbCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(31, 31, 31)
+                                .addComponent(btnMostrar)))))
                 .addContainerGap(1157, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -141,17 +155,59 @@ public class ResumenPagos extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(btnMostrar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    @SuppressWarnings("empty-statement")
+    private void btnMostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarActionPerformed
+        
+        if (!(cbCiclo.getSelectedIndex()==0 ||cbMaestrias.getSelectedIndex()==0)) {
+                     PagoJpaController Pjc = new PagoJpaController(entityMan.getInstance());
+                     EstudianteJpaController Ejc = new EstudianteJpaController(entityMan.getInstance());
+                     Dt = (DefaultTableModel)tbNombres.getModel();
+                     Dt1= (DefaultTableModel)tbPagos.getModel();
+                     Dt.setRowCount(0);
+                     Dt1.setRowCount(0);
+                     Ciclo findCiclo = new Ciclo();
+                     findCiclo = (Ciclo)cbCiclo.getSelectedItem();
+                     Maestria findMaestria = new Maestria();
+                     findMaestria=  (Maestria)cbMaestrias.getSelectedItem();
+                     
+                    
+                     ListP=Pjc.findbyMaestriaCicloCuota(findMaestria, findCiclo, 0);
+                         for (Pago e : ListP) {
+                       
+                            Object[] fila1 = {Ejc.findEstudiante(e.getEstudianteidEstudiante().getIdEstudiante()).getApellido().concat(" "+Ejc.findEstudiante(e.getEstudianteidEstudiante().getIdEstudiante()).getNombre()), 
+                            e.getMonto(), e.getNroVoucher(),e.getFechaPago(),e.getMontoSaldo()};
+                            Dt.addRow(fila1);
+                             for (int i = 1; i <= 4; i++) {
+                                 
+                                 ListP=Pjc.findbyMaestriaCicloCuota(findMaestria, findCiclo, i);
+                                 
+                                 Object[] fila2= {e.getMonto(),e.getNroVoucher(),e.getFechaPago(),e.getMontoSaldo()};
+                                 
+                                 
+                             }
+                         
+                             
+                    
+                         } 
+                            
+                         
+                         
+            }
+        
+    }//GEN-LAST:event_btnMostrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -214,6 +270,7 @@ public class ResumenPagos extends javax.swing.JDialog {
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnMostrar;
     private javax.swing.JComboBox cbCiclo;
     private javax.swing.JComboBox cbMaestrias;
     private javax.swing.JLabel jLabel1;
@@ -222,7 +279,7 @@ public class ResumenPagos extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable tbNombres;
+    private javax.swing.JTable tbPagos;
     // End of variables declaration//GEN-END:variables
 }

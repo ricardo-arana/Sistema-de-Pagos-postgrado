@@ -34,7 +34,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Pago.findByMonto", query = "SELECT p FROM Pago p WHERE p.monto = :monto"),
     @NamedQuery(name = "Pago.findByFechaPago", query = "SELECT p FROM Pago p WHERE p.fechaPago = :fechaPago"),
     @NamedQuery(name = "Pago.findByFechaRegPago", query = "SELECT p FROM Pago p WHERE p.fechaRegPago = :fechaRegPago"),
-    @NamedQuery(name = "Pago.listaPagos", query = "SELECT p FROM Pago p WHERE p.estudianteidEstudiante = :idEstudiante and p.maestriaidMaestria = :idMaestria  and p.cicloidCiclo = :idCiclo order by p.cuota,p.fechaPago")})
+    @NamedQuery(name = "Pago.listaPagos", query = "SELECT p FROM Pago p WHERE p.estudianteidEstudiante = :idEstudiante and p.maestriaidMaestria = :idMaestria  and p.cicloidCiclo = :idCiclo order by p.cuota,p.fechaPago"),
+    @NamedQuery(name = "Pago.PagosGeneral", query = "SELECT p FROM Pago p WHERE p.maestriaidMaestria = :idMaestria and p.cicloidCiclo = :idCiclo order by p.estudianteidEstudiante"),
+    @NamedQuery(name = "Pago.findbyPagoMaestriaCuota", query = "SELECT p FROM Pago p WHERE p.maestriaidMaestria = :idMaestria and p.cuota = :cuota order and by p.estudianteidEstudiante")})
 public class Pago implements Serializable {
     @Basic(optional = false)
     @Column(name = "montoSaldo")

@@ -139,6 +139,26 @@ public class PagoJpaController implements Serializable {
                 .getResultList();
         
     }
+    public List<Pago> pagosGeneral(Maestria idMaestria, Ciclo idCiclo){
+        EntityManager em = getEntityManager();
+        return  em.createNamedQuery("Pago.PagosGeneral")
+                .setParameter("idMaestria", idMaestria)
+                .setParameter("idCiclo", idCiclo)
+                .getResultList();
+        
+    }
+    public List<Pago> findbyMaestriaCicloCuota(Maestria idMaestria, Ciclo idCiclo,int Cuota){
+        EntityManager em = getEntityManager();
+        return  em.createNamedQuery("Pago.findbyPagoMaestriaCuota")
+                .setParameter("idMaestria", idMaestria)
+                .setParameter("idCiclo", idCiclo)
+                .setParameter("Cuota", Cuota)
+                .getResultList();
+        
+    }
+    
+    
+    
     public int getPagoCount() {
         EntityManager em = getEntityManager();
         try {
